@@ -1,7 +1,7 @@
 properties([pipelineTriggers([githubPush()])])
 
 pipeline {
-    agent {label "slave555"}
+    agent any
     
     stages {
         
@@ -18,18 +18,12 @@ pipeline {
             }
         }
 
-        stage ("test") {
-            steps {
-                echo "this is related to testing"
-            }
-        }
-
         stage ("publish") {
             steps {
                 script {
                     try {
                         rtUpload ( 
-                            serverId: 'myjfrog',
+                            serverId: 'surya158',
                             spec: '''
                                   {
                                       "files": [
@@ -52,29 +46,6 @@ pipeline {
             }
         }
 
-        stage ("deploy") {
-            steps {
-              script{
-                sh (
-                  '''
-                   jar_file=$(ls target/*.war)
-                   ansible-playbook -i /home/devops/ansible1/tom_host /home/devops/ansible1/cd.yml --extra-vars artifact_version=$jar_file
-                   '''
-                    )
-              }
-            }
-        }
-
     }
 
-    post {
-        always {
-             /*emailext body: '''this is status of
-
-job: "${JOB_NAME}"
-url: "${BUILD_URL}"''', subject: 'Status of "{$JOB_NAME}"', to: 'tejesh2311@gmail.com'
-        } */
-        echo "post action"
-        }
-    }
 }
