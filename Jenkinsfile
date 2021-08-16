@@ -7,7 +7,7 @@ pipeline {
         
         stage ("git clone project url") {
             steps {
-                git url: 'https://github.com/tejesh555/applogin.git'
+                git url: 'https://github.com/surya150894/applogin.git'
                 sh "ls -all"
             }
         }
